@@ -6,6 +6,7 @@ console.log('disconnected from server');})
 socket.on('newEmail',function(data){
 	console.log(data);
 });
-socket.emit('createEmail',{
-	to:'mail',text:'kakai'
+
+socket.on('newMessage',function(data){
+	console.log('NewMessage',data);
 })
