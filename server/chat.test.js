@@ -4,6 +4,6 @@ describe('for testing message',()=>{
 	it('should test',()=>{
 	var m=generateMessage('abhi','hey');
 	expect(m.from).toBe('abhi')
-	expect(m.createdAt).toBeA('number')
+	expect(typeof m.createdAt).toBe('number')
 	})
 })

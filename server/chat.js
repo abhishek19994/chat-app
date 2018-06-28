@@ -24,6 +24,10 @@ app.use(express.static(path.join(__dirname,'../public')))
 });
 		callback();
 })
+	socket.on('createLocationMessage',function(data){
+		
+		io.emit('newLocationMessage',{from:'Admin',longitude:data.longitude,latitude:data.latitude})
+	})
 	socket.on('createEmail',function(newdata){
 		console.log(newdata);
 })

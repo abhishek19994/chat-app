@@ -8,6 +8,16 @@ socket.on('newEmail',function(data){
 	
 	console.log(data);
 });
+socket.on('newLocationMessage',function(data){
+	li=jQuery('<li></li>');
+	li.text(data.from+':');
+	a=jQuery('<a target="_blank">My Current location</a>')
+	a.attr('href','https://www.google.com/maps?q='+data.latitude+','+data.longitude)
+	li.append(a);
+	jQuery('#item').append(li);
+
+	console.log(data);
+})
 
 socket.on('newMessage',function(data){
 li=jQuery('<li></li>');
@@ -20,8 +30,16 @@ jQuery('#kaki').on('submit',(e)=>{
 	e.preventDefault();
 	socket.emit('createMessage',{
 		from:'User', text:jQuery('[name=name]').val()
-	},function(){})
+	},function(){jQuery('[name=name]').val('')})
 })
-/*jQuery('#geo').on('click',(e)=>{
-	e.blank()
-})*/
+jQuery('#geo').on('click',(e)=>{
+	jQuery('#geo').attr('disabled','disabled').text('Sending location..')
+	if(!navigator.geolocation){return alert('Sorry try nother browser');}
+	else{navigator.geolocation.getCurrentPosition((coord)=>{
+		jQuery('#geo').removeAttr('disabled').text('Sendlocation');
+	socket.emit('createLocationMessage',{latitude:coord.coords.latitude,longitude:coord.coords.longitude})
+	
+	},(e)=>{})
+
+	}
+})
