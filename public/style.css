@@ -78,6 +78,11 @@ background: #e6eaee;
   padding: 10px;
 
 }
+#messages{
+
+  list-style-type: none;
+
+}
 .main2 {
 
     flex-direction: column;
