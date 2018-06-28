@@ -10,7 +10,7 @@ socket.on('newEmail',function(data){
 });
 socket.on('newLocationMessage',function(data){
 	li=jQuery('<li></li>');
-	li.text(data.from+':');
+	li.text(data.from+' '+moment(data.createdAt).format('hh:mm a')+':');
 	a=jQuery('<a target="_blank">My Current location</a>')
 	a.attr('href','https://www.google.com/maps?q='+data.latitude+','+data.longitude)
 	li.append(a);
@@ -21,7 +21,7 @@ socket.on('newLocationMessage',function(data){
 
 socket.on('newMessage',function(data){
 li=jQuery('<li></li>');
-li.text(data.from+':'+data.text);
+li.text(data.from+' '+moment(data.createdAt).format('hh:mm a')+' '+':'+data.text);
 jQuery('#item').append(li);
 	console.log('NewMessage',data);
 })
