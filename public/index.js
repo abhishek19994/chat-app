@@ -1,5 +1,13 @@
 var socket=io();
-
+var scroll=function(){
+	var messages=jQuery('#messages')
+	var clientHeight=messages.prop('clientHeight');
+	var scrollTop=messages.prop('scrollTop')
+	var scrollHeight=messages.prop('scrollHeight')
+	var newMessageHeight=messages.children('li:last-child').innerHeight();
+	var prevMessageHeight=messages.children('li:last-child').prev().innerHeight();
+	if(clientHeight+scrollTop+newMessageHeight+prevMessageHeight>=scrollHeight){messages.scrollTop(scrollHeight);}
+}
 socket.on('connect',()=>{
 console.log('connected to server');})
 socket.on('disconnect',()=>{
@@ -21,6 +29,7 @@ socket.on('newLocationMessage',function(data){
 	var url='https://www.google.com/maps?q='+data.latitude+','+data.longitude;
 	var html=Mustache.render(template,{from:data.from,createdAt:moment(data.createdAt).format('hh:mm a'),url:url})
 	jQuery('#messages').append(html)
+	scroll();
 })
 
 socket.on('newMessage',function(data){
@@ -31,9 +40,10 @@ jQuery('#item').append(li);
 var template=jQuery('#message-template').html();
 var html=Mustache.render(template,{text:data.text,from:data.from,createdAt:moment(data.createdAt).format('hh:mm a')})
 jQuery('#messages').append(html)
+scroll();
 })
 /*socket.emit('createMessage',{from :'abhi', text:'hety'},function(){console.log('got it');})*/
-jQuery('#kaki').on('submit',(e)=>{
+jQuery('#message-form').on('submit',(e)=>{
 	e.preventDefault();
 	socket.emit('createMessage',{
 		from:'User', text:jQuery('[name=name]').val()
