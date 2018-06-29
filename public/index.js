@@ -9,7 +9,16 @@ var scroll=function(){
 	if(clientHeight+scrollTop+newMessageHeight+prevMessageHeight>=scrollHeight){messages.scrollTop(scrollHeight);}
 }
 socket.on('connect',()=>{
-console.log('connected to server');})
+	var params=jQuery.deparam(window.location.search);
+socket.emit('join',params,(err)=>{
+	if(err){
+	alert(err);
+	window.location.href='/';}
+	else{
+		console.log(params);
+	}
+}
+)})
 socket.on('disconnect',()=>{
 console.log('disconnected from server');})
 socket.on('newEmail',function(data){

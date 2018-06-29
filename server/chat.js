@@ -3,7 +3,7 @@ const path=require('path');
 const http=require('http');
 const SOCKETIO=require('socket.io');
 
-var {generateMessage,generateLocationMessage}=require('./message/message.js')
+var {generateMessage,generateLocationMessage,isReal}=require('./message/message.js')
 var app=express();
 var moment=require('moment');
 var server=http.createServer(app);
@@ -13,8 +13,14 @@ app.use(express.static(path.join(__dirname,'../public')))
 
 		console.log('new user connected');
 		
-	socket.emit('newMessage',generateMessage('Admin','Welcome to the chat App'))
-	socket.broadcast.emit('newMessage',	generateMessage('Admin','new user has joined'))
+	
+	socket.on('join',(params,callback)=>{
+		
+	if(!isReal(params.name) || !isReal(params.room)){callback('provide both of them');}
+	callback();
+socket.join(params.room);
+socket.emit('newMessage',generateMessage('Admin','Welcome to the chat App'))
+	socket.to(params.room).broadcast.emit('newMessage',	generateMessage('Admin',params.name+' has joined'))})
 	socket.on('createMessage',function(Message,callback){
 		console.log('create Message',Message);
 		io.emit('newMessage',generateMessage(Message.from,Message.text));

@@ -5,4 +5,7 @@ var generateMessage=(from,text)=>{
 var generateLocationMessage=(from,longitude,latitude)=>{
 	return {from,longitude,latitude,createdAt:moment().valueOf()}
 }
-module.exports={generateMessage,generateLocationMessage};
+var isReal=(str)=>{
+return typeof str==='string' && str.trim().length>0	
+}
+module.exports={generateMessage,generateLocationMessage,isReal};
