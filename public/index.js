@@ -19,6 +19,16 @@ socket.emit('join',params,(err)=>{
 	}
 }
 )})
+socket.on('updateUserList',(users)=>{
+
+var ol=jQuery('<ol></ol>');
+
+users.forEach(function(user){
+	ol.append(jQuery('<li></li>').text(user));
+})
+jQuery('#users').html(ol)
+
+})
 socket.on('disconnect',()=>{
 console.log('disconnected from server');})
 socket.on('newEmail',function(data){
@@ -55,7 +65,7 @@ scroll();
 jQuery('#message-form').on('submit',(e)=>{
 	e.preventDefault();
 	socket.emit('createMessage',{
-		from:'User', text:jQuery('[name=name]').val()
+	 text:jQuery('[name=name]').val()
 	},function(){jQuery('[name=name]').val('')})
 })
 jQuery('#geo').on('click',(e)=>{
