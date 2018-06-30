@@ -50,4 +50,7 @@ describe('user testing',()=>{
 		room:'room1'
 	})
 	})
+	it('should test getRoom',()=>{
+		console.log(users.getRoom());
+	})
 })

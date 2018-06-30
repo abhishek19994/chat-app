@@ -1,3 +1,4 @@
+
 class User{
 	constructor(){
 		this.users=[];
@@ -5,6 +6,7 @@ class User{
 	}
 	addUser(id,name,room){
 		var user={id,name,room};
+	
 		this.users.push(user);
 		return user;
 	}
@@ -25,6 +27,14 @@ class User{
 		var user=this.users.filter((user)=>user.id===id)[0]
 
 	return user;
+	}
+	getRoom(){
+		var roomArray=[];
+		var rooms=this.users.filter(function(user){
+			if(!roomArray.includes(user.room)){roomArray.push(user.room);
+				return user;}
+		})
+		return roomArray;
 	}
 }
 

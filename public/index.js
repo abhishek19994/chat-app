@@ -8,6 +8,7 @@ var scroll=function(){
 	var prevMessageHeight=messages.children('li:last-child').prev().innerHeight();
 	if(clientHeight+scrollTop+newMessageHeight+prevMessageHeight>=scrollHeight){messages.scrollTop(scrollHeight);}
 }
+
 socket.on('connect',()=>{
 	var params=jQuery.deparam(window.location.search);
 socket.emit('join',params,(err)=>{

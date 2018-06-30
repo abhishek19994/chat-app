@@ -10,6 +10,11 @@ var moment=require('moment');
 var server=http.createServer(app);
 var io=SOCKETIO(server);
 app.use(express.static(path.join(__dirname,'../public')))
+app.get('/kki', (req, res) => {
+ 
+  res.send({room:users.getRoom()});
+});
+
 	io.on('connection',(socket)=>{
 
 		console.log('new user connected');
@@ -23,8 +28,11 @@ socket.join(params.room);
 users.removeUser(socket.id);
 users.addUser(socket.id, params.name,params.room);
 io.to(params.room).emit('updateUserList',users.getList(params.room));
+
+
 socket.emit('newMessage',generateMessage('Admin','Welcome to the chat App'))
 	socket.to(params.room).broadcast.emit('newMessage',	generateMessage('Admin',params.name+' has joined'))})
+	
 	socket.on('createMessage',function(Message,callback){
 		console.log('create Message',Message);
 		var user=users.getUser(socket.id)
@@ -42,6 +50,7 @@ socket.emit('newMessage',generateMessage('Admin','Welcome to the chat App'))
 var user=users.removeUser(socket.id);
 io.to(user.room).emit('updateUserList',users.getList(user.room))
 io.to(user.room).emit('newMessage',generateMessage('Admin',user.name +' has left'))
+
 		console.log('user disconnected');})
 	
 
@@ -49,4 +58,5 @@ io.to(user.room).emit('newMessage',generateMessage('Admin',user.name +' has left
 	/*var date=moment();
 	console.log(date.valueOf());
 */
+
 server.listen(3000,()=>{console.log('Server is up on 3000');});
